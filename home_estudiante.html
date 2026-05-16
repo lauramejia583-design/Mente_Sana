@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente Sana — Mi Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="CSS/estudiante.css">
+<link rel="stylesheet" href="CSS/responsive.css">
+<link rel="icon" type="image/png" href="IMG/menteSana-logo2.png">
+<link rel="icon" type="image/png" href="IMG/menteSana-logo2.png">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<!-- Sidebar overlay for mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-top">
+    <div class="s-brand">
+      <img src="IMG/menteSana-logo2.png" alt="Logo">
+      <span>Mente Sana</span>
+    </div>
+    <div class="s-profile">
+      <div class="s-avatar">CM</div>
+      <div class="s-info">
+        <p>Carlos Mejía</p>
+        <small>Estudiante · Ing. Software</small>
+      </div>
+    </div>
+  </div>
+
+  <nav class="s-nav">
+    <div class="s-section">Principal</div>
+    <button class="nav-item active" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Panel principal</span>
+    </button>
+
+    <div class="s-section">Bienestar</div>
+    <button class="nav-item" onclick="openModal('modal-emocion'); setActive(this)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      <span>Registrar emoción</span>
+    </button>
+    <button class="nav-item" onclick="openModal('modal-recomendaciones'); setActive(this)">
+      <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span>Recomendaciones</span>
+    </button>
+    <button class="nav-item" onclick="openModal('modal-cita'); setActive(this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>Pedir cita</span>
+    </button>
+    <button class="nav-item" onclick="openModal('modal-historial'); setActive(this)">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Historial emocional</span>
+    </button>
+
+    <div class="s-section">Cuenta</div>
+    <button class="nav-item" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Mi perfil</span>
+    </button>
+  </nav>
+
+  <div class="s-bottom">
+    <button class="nav-item" onclick="window.location.href='mente_sana_login.html'">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span>Cerrar sesión</span>
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- topbar -->
+  <header class="topbar">
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menú">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-left">
+      <h1>Panel del Estudiante</h1>
+      <p id="fecha-hoy"></p>
+    </div>
+    <div class="topbar-right">
+      <button class="tb-btn" aria-label="Notificaciones">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="badge"></span>
+      </button>
+      <button class="tb-btn" aria-label="Configuración">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- greeting -->
+    <div class="greeting">
+      <div class="greeting-text">
+        <h2>Hola, Carlos 👋</h2>
+        <p>¿Cómo te sientes hoy? Recuerda registrar tu estado emocional.</p>
+      </div>
+      <div class="greeting-mood">
+        <div class="mood-emoji" id="last-mood-emoji">😊</div>
+        <p>Último registro</p>
+        <strong id="last-mood-label">Bien</strong>
+      </div>
+    </div>
+
+    <!-- quick actions -->
+    <div class="section-title">Acciones rápidas</div>
+    <div class="actions-grid">
+
+      <div class="action-card blue" onclick="openModal('modal-emocion')">
+        <div class="ac-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div class="ac-body">
+          <h3>Registrar emoción</h3>
+          <p>Cuéntanos cómo te sientes hoy</p>
+        </div>
+        <div class="ac-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+
+      <div class="action-card green" onclick="openModal('modal-recomendaciones')">
+        <div class="ac-icon" style="background:var(--green-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:var(--green)"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="ac-body">
+          <h3>Ver recomendaciones</h3>
+          <p>Consejos personalizados para ti</p>
+        </div>
+        <div class="ac-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+
+      <div class="action-card purple" onclick="openModal('modal-cita')">
+        <div class="ac-icon" style="background:var(--purple-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:var(--purple)"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="ac-body">
+          <h3>Pedir cita</h3>
+          <p>Agenda con un psicólogo</p>
+        </div>
+        <div class="ac-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+
+      <div class="action-card amber" onclick="openModal('modal-historial')">
+        <div class="ac-icon" style="background:var(--amber-bg)">
+          <svg viewBox="0 0 24 24" style="stroke:var(--amber)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="ac-body">
+          <h3>Historial emocional</h3>
+          <p>Revisa tu evolución reciente</p>
+        </div>
+        <div class="ac-arrow"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+      </div>
+
+    </div>
+
+    <!-- bottom widgets -->
+    <div class="bottom-grid">
+
+      <!-- mood chart -->
+      <div class="widget">
+        <div class="widget-head">
+          <h3>Estado emocional esta semana</h3>
+          <a href="#" onclick="openModal('modal-historial'); return false;">Ver todo</a>
+        </div>
+        <div class="mood-week">
+          <div class="mood-bar-wrap">
+            <div class="mood-bar" style="height:45px;background:#B5D4F4;border-radius:6px" title="Lun: Regular"></div>
+            <span>Lun</span>
+          </div>
+          <div class="mood-bar-wrap">
+            <div class="mood-bar" style="height:30px;background:#85B7EB;border-radius:6px" title="Mar: Triste"></div>
+            <span>Mar</span>
+          </div>
+          <div class="mood-bar-wrap">
+            <div class="mood-bar" style="height:60px;background:#378ADD;border-radius:6px" title="Mié: Bien"></div>
+            <span>Mié</span>
+          </div>
+          <div class="mood-bar-wrap">
+            <div class="mood-bar" style="height:55px;background:#185FA5;border-radius:6px" title="Jue: Bien"></div>
+            <span>Jue</span>
+          </div>
+          <div class="mood-bar-wrap">
+            <div class="mood-bar" style="height:70px;background:#0C447C;border-radius:6px" title="Vie: Muy bien"></div>
+            <span>Vie</span>
+          </div>
+          <div class="mood-bar-wrap">
+            <div class="mood-bar" style="height:65px;background:#378ADD;border-radius:6px" title="Sáb: Bien"></div>
+            <span>Sáb</span>
+          </div>
+          <div class="mood-bar-wrap">
+            <div class="mood-bar" id="bar-hoy" style="height:20px;background:#B5D4F4;border-radius:6px;opacity:.5"></div>
+            <span style="color:#D3D1C7">Hoy</span>
+          </div>
+        </div>
+        <div class="mood-legend">
+          <div class="ml-item"><div class="ml-dot" style="background:#0C447C"></div><span>Muy bien</span></div>
+          <div class="ml-item"><div class="ml-dot" style="background:#378ADD"></div><span>Bien</span></div>
+          <div class="ml-item"><div class="ml-dot" style="background:#85B7EB"></div><span>Regular</span></div>
+          <div class="ml-item"><div class="ml-dot" style="background:#B5D4F4"></div><span>Triste</span></div>
+        </div>
+      </div>
+
+      <!-- appointments -->
+      <div class="widget">
+        <div class="widget-head">
+          <h3>Próximas citas</h3>
+          <a href="#" onclick="openModal('modal-cita'); return false;">+ Nueva</a>
+        </div>
+        <div class="appt-list" id="appt-lista">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MODALES ═══════════ -->
+
+<!-- Registrar emoción -->
+<div class="modal-bg" id="modal-emocion">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>¿Cómo te sientes hoy?</h2>
+      <button class="close-btn" onclick="closeModal('modal-emocion')">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="mood-picker" id="mood-picker">
+      <button class="mood-opt" onclick="selectMood(this)" data-val="muy-bien">
+        <span class="em">😄</span><span>Muy bien</span>
+      </button>
+      <button class="mood-opt" onclick="selectMood(this)" data-val="bien">
+        <span class="em">😊</span><span>Bien</span>
+      </button>
+      <button class="mood-opt" onclick="selectMood(this)" data-val="regular">
+        <span class="em">😐</span><span>Regular</span>
+      </button>
+      <button class="mood-opt" onclick="selectMood(this)" data-val="triste">
+        <span class="em">😔</span><span>Triste</span>
+      </button>
+      <button class="mood-opt" onclick="selectMood(this)" data-val="mal">
+        <span class="em">😞</span><span>Muy mal</span>
+      </button>
+    </div>
+    <label for="nota-emocion">Nota opcional</label>
+    <textarea id="nota-emocion" placeholder="¿Quieres contar algo más sobre cómo te sientes?"></textarea>
+    <button class="modal-btn" onclick="guardarEmocion()">Guardar registro</button>
+  </div>
+</div>
+
+<!-- Recomendaciones -->
+<div class="modal-bg" id="modal-recomendaciones">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-head">
+      <h2>Recomendaciones</h2>
+      <button class="close-btn" onclick="closeModal('modal-recomendaciones')">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <p id="recs-subtitulo" style="font-size:.83rem;color:var(--g700);font-weight:300;margin-bottom:1.25rem;line-height:1.6">Basado en tu estado emocional reciente, aquí tienes algunas sugerencias:</p>
+    <div id="recs-lista" style="display:flex;flex-direction:column;gap:10px"></div>
+    <button class="modal-btn" style="margin-top:1.5rem" onclick="closeModal('modal-recomendaciones')">Entendido</button>
+  </div>
+</div>
+
+<!-- Pedir cita -->
+<div class="modal-bg" id="modal-cita">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Agendar cita</h2>
+      <button class="close-btn" onclick="closeModal('modal-cita')">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div style="margin-bottom:1.15rem">
+      <label>Psicólogo</label>
+      <select id="cita-psicologo">
+        <option value="">Selecciona un profesional</option>
+        <option>Dra. Ana Ramírez</option>
+        <option>Dr. Luis Herrera</option>
+        <option>Dra. Camila Torres</option>
+      </select>
+    </div>
+    <div style="margin-bottom:1.15rem">
+      <label>Modalidad</label>
+      <select id="cita-modalidad">
+        <option>Presencial</option>
+        <option>Virtual</option>
+      </select>
+    </div>
+    <div class="date-time-row">
+      <div>
+        <label>Fecha</label>
+        <input type="date" id="fecha-cita">
+      </div>
+      <div>
+        <label>Hora</label>
+        <select id="cita-hora">
+          <option>08:00 am</option>
+          <option>09:00 am</option>
+          <option>10:00 am</option>
+          <option>10:30 am</option>
+          <option>11:00 am</option>
+          <option>02:00 pm</option>
+          <option>03:00 pm</option>
+          <option>04:00 pm</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:1.25rem">
+      <label>Motivo (opcional)</label>
+      <textarea id="cita-motivo" style="height:75px;margin-bottom:0" placeholder="Describe brevemente el motivo de la cita..."></textarea>
+    </div>
+    <button class="modal-btn" onclick="agendarCita()">Solicitar cita</button>
+  </div>
+</div>
+
+<!-- Historial emocional -->
+<div class="modal-bg" id="modal-historial">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-head">
+      <h2>Historial emocional</h2>
+      <button class="close-btn" onclick="closeModal('modal-historial')">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <p style="font-size:.82rem;color:var(--g400);font-weight:300;margin-bottom:1.25rem">Tus últimos 7 registros emocionales</p>
+    <div id="historial-lista" style="display:flex;flex-direction:column;gap:8px">
+    </div>
+    <button class="modal-btn" style="margin-top:1.5rem;background:white;color:var(--b600);border:1.5px solid var(--b100)" onclick="closeModal('modal-historial')">Cerrar</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">Registro guardado correctamente</span>
+</div>
+
+<script>
+  /* Fecha de hoy */
+  const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const hoy = new Date();
+  document.getElementById('fecha-hoy').textContent =
+    `${dias[hoy.getDay()]}, ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}`;
+
+  /* Pre-fill fecha cita */
+  const fechaInput = document.getElementById('fecha-cita');
+  if (fechaInput) fechaInput.valueAsDate = new Date(hoy.getTime() + 7 * 86400000);
+
+  /* ── Datos de emociones ── */
+  const MOOD_META = {
+    'muy-bien': { emoji: '😄', label: 'Muy bien',  color: '#0C447C', bg: '#ECFDF5', textColor: 'var(--green)', barH: 70 },
+    'bien':     { emoji: '😊', label: 'Bien',      color: '#378ADD', bg: 'var(--b50)', textColor: 'var(--b600)', barH: 60 },
+    'regular':  { emoji: '😐', label: 'Regular',   color: '#85B7EB', bg: 'var(--amber-bg)', textColor: 'var(--amber)', barH: 45 },
+    'triste':   { emoji: '😔', label: 'Triste',    color: '#B5D4F4', bg: '#FDF2F8', textColor: '#BE185D', barH: 30 },
+    'mal':      { emoji: '😞', label: 'Muy mal',   color: '#FECACA', bg: '#FEF2F2', textColor: '#DC2626', barH: 18 },
+  };
+
+  /* Historial inicial (datos demo) */
+  const historialInicial = [
+    { val: 'bien',     nota: '',                          ts: new Date(hoy - 1 * 86400000) },
+    { val: 'muy-bien', nota: 'tuve un examen y me fue bien', ts: new Date(hoy - 2 * 86400000) },
+    { val: 'regular',  nota: '',                          ts: new Date(hoy - 3 * 86400000) },
+    { val: 'triste',   nota: 'mucho estrés por entregas', ts: new Date(hoy - 4 * 86400000) },
+    { val: 'bien',     nota: '',                          ts: new Date(hoy - 5 * 86400000) },
+  ];
+
+  let registros = [...historialInicial];
+
+  /* Formato de fecha relativa */
+  function formatRelativo(ts) {
+    const diff = Math.floor((hoy - ts) / 86400000);
+    const hora = ts.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    if (diff === 0) return `Hoy a las ${hora}`;
+    if (diff === 1) return `Ayer a las ${hora}`;
+    return `Hace ${diff} días · ${hora}`;
+  }
+
+  /* Renderiza un ítem del historial */
+  function crearItemHistorial(reg) {
+    const m = MOOD_META[reg.val];
+    const texto = reg.nota ? `${m.label} · ${reg.nota}` : m.label;
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--g50);border-radius:10px;border:1px solid var(--g100)';
+    div.innerHTML = `
+      <span style="font-size:1.3rem">${m.emoji}</span>
+      <div style="flex:1">
+        <p style="font-size:.85rem;font-weight:500;color:var(--g900)">${texto}</p>
+        <p style="font-size:.74rem;color:var(--g400);font-weight:300">${formatRelativo(reg.ts)}</p>
+      </div>
+      <span style="font-size:.74rem;background:${m.bg};color:${m.textColor};padding:3px 10px;border-radius:20px">${m.label}</span>`;
+    return div;
+  }
+
+  /* Renderiza el historial completo */
+  function renderHistorial() {
+    const lista = document.getElementById('historial-lista');
+    lista.innerHTML = '';
+    registros.slice(0, 7).forEach(r => lista.appendChild(crearItemHistorial(r)));
+  }
+
+  /* Actualiza la tarjeta "Último registro" del greeting */
+  function actualizarUltimoRegistro(val) {
+    const m = MOOD_META[val];
+    document.getElementById('last-mood-emoji').textContent = m.emoji;
+    document.getElementById('last-mood-label').textContent = m.label;
+  }
+
+  /* Actualiza la barra "Hoy" en la gráfica semanal */
+  function actualizarBarraHoy(val) {
+    const m = MOOD_META[val];
+    const bar = document.getElementById('bar-hoy');
+    bar.style.height = m.barH + 'px';
+    bar.style.background = m.color;
+    bar.style.opacity = '1';
+    bar.parentElement.querySelector('span').style.color = '';
+  }
+
+  /* Render inicial del historial */
+  renderHistorial();
+
+  /* ──────────────────────────── */
+
+  /* Sidebar active */
+  function setActive(el) {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  /* Modales */
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (id === 'modal-recomendaciones') renderRecs();
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.modal-bg').forEach(bg => {
+    bg.addEventListener('click', e => { if (e.target === bg) closeModal(bg.id); });
+  });
+
+  /* Mood selection */
+  function selectMood(el) {
+    document.querySelectorAll('.mood-opt').forEach(b => b.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+
+  /* Toast */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  /* Guardar emoción */
+  function guardarEmocion() {
+    const sel = document.querySelector('.mood-opt.sel');
+    if (!sel) { alert('Por favor selecciona cómo te sientes.'); return; }
+
+    const val  = sel.dataset.val;
+    const nota = document.getElementById('nota-emocion').value.trim();
+    const nuevo = { val, nota, ts: new Date() };
+
+    /* 1. Agregar al historial */
+    registros.unshift(nuevo);
+    renderHistorial();
+
+    /* 2. Actualizar "Último registro" en el dashboard */
+    actualizarUltimoRegistro(val);
+
+    /* 3. Actualizar barra de hoy en la gráfica */
+    actualizarBarraHoy(val);
+
+    /* 4. Cerrar modal y limpiar */
+    closeModal('modal-emocion');
+    showToast('✓ Estado emocional registrado correctamente');
+    document.getElementById('nota-emocion').value = '';
+    document.querySelectorAll('.mood-opt').forEach(b => b.classList.remove('sel'));
+  }
+
+  /* ── Citas ── */
+  const MESES_CORTOS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+  /* Citas iniciales demo */
+  const citasDemo = [
+    { id: 1, psicologo: 'Dra. Ana Ramírez',  hora: '10:30 am', modalidad: 'Presencial', fecha: new Date(2026, 4, 22), estado: 'confirmed' },
+    { id: 2, psicologo: 'Dr. Luis Herrera',   hora: '2:00 pm',  modalidad: 'Virtual',    fecha: new Date(2026, 4, 30), estado: 'pending'   },
+  ];
+
+  /* Carga citas del estudiante desde localStorage (las que él mismo agendó) */
+  function cargarCitasLS() {
+    try { return JSON.parse(localStorage.getItem('ms_citas_estudiante') || '[]'); } catch { return []; }
+  }
+  function guardarCitasLS(arr) {
+    localStorage.setItem('ms_citas_estudiante', JSON.stringify(arr));
+  }
+
+  let citasEstudiante = cargarCitasLS();
+  let nextCitaId = citasEstudiante.length ? Math.max(...citasEstudiante.map(c => c.id)) + 1 : 100;
+
+  /* Lista combinada para mostrar al estudiante */
+  function getCitasActivas() {
+    const canceladasLS = citasEstudiante.filter(c => c.estado === 'cancelled').map(c => c.id);
+    const demo = citasDemo
+      .filter(c => !canceladasLS.includes(c.id))
+      .map(c => ({ ...c, fecha: c.fecha.getTime(), fromDemo: true }));
+    const propias = citasEstudiante.filter(c => c.estado !== 'cancelled');
+    return [...demo, ...propias]
+      .map(c => ({ ...c, fechaObj: new Date(c.fecha) }))
+      .sort((a, b) => a.fechaObj - b.fechaObj);
+  }
+
+  function renderCitas() {
+    const lista = document.getElementById('appt-lista');
+    lista.innerHTML = '';
+    const activas = getCitasActivas();
+
+    if (activas.length === 0) {
+      lista.innerHTML = `<p style="font-size:.82rem;color:var(--g400);font-weight:300;padding:8px 0">No tienes citas próximas. <a href="#" onclick="openModal('modal-cita');return false;" style="color:var(--b500)">Agenda una.</a></p>`;
+      return;
+    }
+
+    activas.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'appt-item';
+      div.innerHTML = `
+        <div class="appt-date">
+          <span class="day">${c.fechaObj.getDate()}</span>
+          <span class="mon">${MESES_CORTOS[c.fechaObj.getMonth()]}</span>
+        </div>
+        <div class="appt-info">
+          <h4>${c.psicologo}</h4>
+          <p>${c.hora} · ${c.modalidad}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <span class="appt-badge ${c.estado}">${c.estado === 'confirmed' ? 'Confirmada' : 'Pendiente'}</span>
+          <button onclick="cancelarCita(${c.id}, ${!!c.fromDemo})" style="font-size:.70rem;color:#DC2626;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;font-weight:400">Cancelar</button>
+        </div>`;
+      lista.appendChild(div);
+    });
+  }
+
+  function cancelarCita(id, esDemo) {
+    if (!confirm('¿Seguro que deseas cancelar esta cita?')) return;
+    if (esDemo) {
+      /* Marca la cita demo como cancelada en localStorage */
+      const yaExiste = citasEstudiante.find(c => c.id === id);
+      if (!yaExiste) citasEstudiante.push({ id, estado: 'cancelled', fromDemo: true });
+      else yaExiste.estado = 'cancelled';
+    } else {
+      const cita = citasEstudiante.find(c => c.id === id);
+      if (cita) cita.estado = 'cancelled';
+    }
+    guardarCitasLS(citasEstudiante);
+    renderCitas();
+    showToast('✓ Cita cancelada correctamente');
+  }
+
+  /* Agendar cita */
+  function agendarCita() {
+    const psicologo = document.getElementById('cita-psicologo').value;
+    const modalidad = document.getElementById('cita-modalidad').value;
+    const fechaVal  = document.getElementById('fecha-cita').value;
+    const hora      = document.getElementById('cita-hora').value;
+    const motivo    = document.getElementById('cita-motivo').value.trim();
+
+    if (!psicologo) { alert('Por favor selecciona un psicólogo.'); return; }
+    if (!fechaVal)  { alert('Por favor selecciona una fecha.'); return; }
+
+    const [y, m, d] = fechaVal.split('-').map(Number);
+    const nueva = {
+      id: nextCitaId++,
+      psicologo, hora, modalidad, motivo,
+      fecha: new Date(y, m - 1, d).getTime(),
+      estado: 'pending',
+    };
+
+    citasEstudiante.push(nueva);
+    guardarCitasLS(citasEstudiante);
+    renderCitas();
+
+    closeModal('modal-cita');
+    showToast('✓ Solicitud de cita enviada a Bienestar');
+
+    /* Limpiar form */
+    document.getElementById('cita-psicologo').value = '';
+    document.getElementById('cita-motivo').value = '';
+  }
+
+  /* ── Recomendaciones (sincronizadas con admin via localStorage) ── */
+  const RECS_DEFAULT = [
+    { id:1, titulo:'Respiración consciente', emoji:'🧘', emocion:'Triste',   categoria:'Mindfulness',       desc:'Dedica 5 minutos al día a ejercicios de respiración profunda para reducir el estrés académico y calmar la mente.' },
+    { id:2, titulo:'Caminata diaria',        emoji:'🚶', emocion:'Regular',  categoria:'Actividad física',  desc:'Una caminata de 20 minutos al aire libre puede mejorar significativamente tu estado de ánimo y tu nivel de concentración.' },
+    { id:3, titulo:'Diario de gratitud',     emoji:'📓', emocion:'Triste',   categoria:'Hábitos saludables',desc:'Escribe 3 cosas positivas de tu día antes de dormir para reforzar el bienestar emocional y cambiar el foco mental.' },
+    { id:4, titulo:'Habla con alguien',      emoji:'💬', emocion:'Muy mal',  categoria:'Apoyo social',      desc:'Si sientes que necesitas apoyo adicional, no dudes en agendar una cita con el equipo de Bienestar universitario.' },
+    { id:5, titulo:'Técnica Pomodoro',       emoji:'⏱️', emocion:'Regular',  categoria:'Académico',         desc:'Organiza tu estudio en bloques de 25 minutos con pausas de 5. Mejora la productividad y reduce el agotamiento mental.' },
+    { id:6, titulo:'Celebra tus logros',     emoji:'🎉', emocion:'Muy bien', categoria:'Hábitos saludables',desc:'Reconocer y celebrar tus avances, por pequeños que sean, refuerza la motivación y el bienestar emocional.' },
+  ];
+
+  const PALETA = [
+    'var(--b50)',       'var(--green-bg)', 'var(--purple-bg)',
+    'var(--amber-bg)', '#FDF2F8',         '#ECFDF5',
+  ];
+  const BORDE = [
+    'var(--b100)', '#A7F3D0', '#DDD6FE',
+    '#FDE68A',    '#FBCFE8', '#6EE7B7',
+  ];
+
+  function cargarRecs() {
+    try {
+      const ls = localStorage.getItem('ms_recomendaciones');
+      return ls ? JSON.parse(ls) : RECS_DEFAULT;
+    } catch { return RECS_DEFAULT; }
+  }
+
+  /* Mapa de valor interno → etiqueta que usa el admin en RECS_DEFAULT */
+  const MOOD_LABEL_MAP = {
+    'muy-bien': 'Muy bien',
+    'bien':     'Bien',
+    'regular':  'Regular',
+    'triste':   'Triste',
+    'mal':      'Muy mal',
+  };
+
+  function renderRecs() {
+    const lista = document.getElementById('recs-lista');
+    const subtitulo = document.getElementById('recs-subtitulo');
+    const todasRecs = cargarRecs();
+
+    if (!todasRecs.length) {
+      lista.innerHTML = '<p style="font-size:.83rem;color:var(--g400)">No hay recomendaciones disponibles por el momento.</p>';
+      return;
+    }
+
+    // Obtener la última emoción registrada
+    const ultimaEmocion = registros.length ? registros[0].val : null;
+    const ultimaEtiqueta = ultimaEmocion ? MOOD_LABEL_MAP[ultimaEmocion] : null;
+    const ultimaEmoji = ultimaEmocion ? MOOD_META[ultimaEmocion].emoji : '';
+
+    // Filtrar recomendaciones que coincidan con la última emoción
+    // Las recomendaciones del admin usan la etiqueta legible (ej: 'Triste', 'Bien')
+    // También incluir las de categoría 'General' si existen
+    let recs = ultimaEtiqueta
+      ? todasRecs.filter(r =>
+          !r.emocion ||
+          r.emocion === 'General' ||
+          r.emocion.toLowerCase() === ultimaEtiqueta.toLowerCase()
+        )
+      : todasRecs;
+
+    // Si no hay recomendaciones específicas para esa emoción, mostrar todas
+    if (recs.length === 0) recs = todasRecs;
+
+    // Actualizar subtítulo
+    if (subtitulo) {
+      subtitulo.innerHTML = ultimaEtiqueta
+        ? `Tu último registro fue <strong>${ultimaEmoji} ${ultimaEtiqueta}</strong>. Aquí tienes sugerencias para ti:`
+        : 'Basado en tu estado emocional reciente, aquí tienes algunas sugerencias:';
+    }
+
+    lista.innerHTML = recs.map((r, i) => {
+      const bg = PALETA[i % PALETA.length];
+      const bo = BORDE[i % BORDE.length];
+      return `<div style="background:${bg};border:1px solid ${bo};border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start">
+        <span style="font-size:1.4rem">${r.emoji}</span>
+        <div>
+          <p style="font-size:.86rem;font-weight:500;color:var(--g900);margin-bottom:3px">${r.titulo}</p>
+          <p style="font-size:.78rem;color:var(--g700);font-weight:300;line-height:1.5">${r.desc}</p>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+
+
+  renderCitas();
+
+</script>
+
+<script>
+/* ── Sidebar responsive ── */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+  document.body.style.overflow =
+    document.getElementById('sidebar').classList.contains('open') ? 'hidden' : '';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close sidebar on nav item click (mobile)
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (window.innerWidth <= 900) closeSidebar();
+  });
+});
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+</script>
+
+</body>
+</html>

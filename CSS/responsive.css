@@ -1,0 +1,131 @@
+/* ══════════════════════════════════════════════════════
+   Mente Sana — Estilos responsive compartidos (sidebar)
+   Incluir en: home_estudiante, home_psicologo, home_admin
+   ══════════════════════════════════════════════════════ */
+
+/* ── HAMBURGER BUTTON (solo mobile) ── */
+.hamburger {
+  display: none;
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  border-radius: 10px;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.hamburger:hover { background: var(--g100); }
+.hamburger svg {
+  width: 22px; height: 22px;
+  fill: none; stroke: var(--g700);
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── SIDEBAR OVERLAY (fondo oscuro en mobile) ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(4,44,83,.55);
+  z-index: 49;
+  opacity: 0;
+  transition: opacity .25s;
+}
+.sidebar-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+/* ── SIDEBAR MOBILE ── */
+@media (max-width: 900px) {
+  /* Muestra el botón hamburguesa */
+  .hamburger { display: flex; }
+
+  /* Sidebar se convierte en drawer deslizable */
+  .sidebar {
+    display: flex !important;
+    transform: translateX(-100%);
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+    z-index: 50;
+    box-shadow: 4px 0 24px rgba(0,0,0,.18);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Main ya no tiene margen izquierdo */
+  .main { margin-left: 0 !important; }
+
+  /* Topbar: mostrar hamburguesa a la izquierda */
+  .topbar {
+    padding: 0 1rem !important;
+    gap: 10px;
+  }
+
+  /* Ajustes de contenido */
+  .content { padding: 1.25rem 1rem !important; }
+
+  /* Greeting */
+  .greeting {
+    padding: 1.25rem !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  .greeting-mood,
+  .greeting-stats { width: 100%; justify-content: flex-start; }
+  .greeting-stats { gap: .75rem !important; }
+  .gstat { flex: 1; }
+
+  /* Actions grid: 2 columnas */
+  .actions-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Bottom grid: 1 columna */
+  .bottom-grid { grid-template-columns: 1fr !important; }
+
+  /* Tabs: scroll horizontal */
+  .main-tabs { overflow-x: auto; flex-wrap: nowrap !important; -webkit-overflow-scrolling: touch; }
+  .main-tab { flex-shrink: 0; padding: 0 14px !important; font-size: .82rem !important; }
+
+  /* Tabla: scroll horizontal */
+  .sec-card { overflow-x: auto; }
+  .data-table { min-width: 600px; }
+
+  /* Toolbar wrapping */
+  .toolbar { flex-wrap: wrap !important; gap: 8px !important; }
+  .toolbar h3 { width: 100%; margin-right: 0 !important; }
+  .search-wrap input { width: 160px !important; }
+
+  /* Form rows: 1 columna */
+  .form-row.cols2,
+  .form-row.cols3 { grid-template-columns: 1fr !important; }
+
+  /* Modal */
+  .modal { margin: 0 !important; border-radius: 20px 20px 0 0 !important; position: fixed; bottom: 0; left: 0; right: 0; max-height: 90vh; overflow-y: auto; }
+  .modal-bg { align-items: flex-end !important; padding: 0 !important; }
+  .modal-body { max-height: 60vh !important; }
+
+  /* Toast */
+  .toast { bottom: 1rem; right: 1rem; left: 1rem; font-size: .82rem !important; }
+
+  /* Rec grid */
+  .rec-grid { grid-template-columns: 1fr !important; padding: 1rem !important; }
+
+  /* Greeting stats: esconder si no caben */
+  .greeting-stats { display: flex !important; }
+
+  /* Topbar título más pequeño */
+  .topbar h1, .topbar-left h1 { font-size: 1.1rem !important; }
+  .topbar p,  .topbar-left p  { display: none; }
+
+  /* Calendario / agenda items */
+  .appt-item { flex-wrap: wrap; }
+  .appt-badge { margin-left: 0 !important; }
+}
+
+@media (max-width: 500px) {
+  .actions-grid { grid-template-columns: 1fr !important; }
+  .greeting-stats { flex-direction: column !important; }
+  .gstat { width: 100%; }
+  .date-time-row { grid-template-columns: 1fr !important; }
+  .mood-picker { grid-template-columns: repeat(3, 1fr) !important; }
+  .search-wrap input { width: 130px !important; }
+}

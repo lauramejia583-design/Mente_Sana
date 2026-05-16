@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mente Sana — Panel Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="CSS/admins.css">
+<link rel="stylesheet" href="CSS/responsive.css">
+<link rel="icon" type="image/png" href="IMG/menteSana-logo2.png">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<!-- Sidebar overlay for mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="s-top">
+    <div class="s-brand">
+      <img src="IMG/menteSana-logo2.png" alt="Logo">
+      <span>Mente Sana</span>
+    </div>
+    <div class="s-profile">
+      <div class="s-av">AD</div>
+      <div class="s-info">
+        <p>Administrador</p>
+        <small>Panel de administración</small>
+      </div>
+    </div>
+  </div>
+  <nav class="s-nav">
+    <div class="s-sec">Principal</div>
+    <button class="nav-item active" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <div class="s-sec">Gestión</div>
+    <button class="nav-item" onclick="setActive(this); switchMainTab(document.querySelectorAll('.main-tab')[0],'pane-usuarios')">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Usuarios</span>
+    </button>
+    <button class="nav-item" onclick="setActive(this); switchMainTab(document.querySelectorAll('.main-tab')[1],'pane-recomendaciones')">
+      <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span>Recomendaciones</span>
+    </button>
+    <div class="s-sec">Sistema</div>
+    <button class="nav-item" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Reportes</span>
+    </button>
+    <button class="nav-item" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Configuración</span>
+    </button>
+  </nav>
+  <div class="s-bottom">
+    <button class="nav-item" onclick="window.location.href='mente_sana_login.html'">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span>Cerrar sesión</span>
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="topbar">
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Menú">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <h1>Panel Administrativo</h1>
+      <p id="fecha-hoy"></p>
+    </div>
+    <div class="tb-right">
+      <button class="tb-btn"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge"></span></button>
+      <button class="tb-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Greeting -->
+    <div class="greeting">
+      <div class="greeting-text">
+        <h2>Panel de Administración 🛠️</h2>
+        <p>Gestiona usuarios, recomendaciones y configuración del sistema.</p>
+      </div>
+      <div class="greeting-stats">
+        <div class="gstat"><div class="num" id="stat-users">6</div><p>Usuarios</p></div>
+        <div class="gstat"><div class="num" id="stat-recs">6</div><p>Recomendaciones</p></div>
+        <div class="gstat"><div class="num">2</div><p>Psicólogos</p></div>
+      </div>
+    </div>
+
+    <!-- Main tabs -->
+    <div class="main-tabs">
+      <button class="main-tab active" onclick="switchMainTab(this,'pane-usuarios')">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Usuarios
+      </button>
+      <button class="main-tab" onclick="switchMainTab(this,'pane-recomendaciones')">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Recomendaciones
+      </button>
+    </div>
+
+    <!-- ═══ PANEL USUARIOS ═══ -->
+    <div class="tab-pane active" id="pane-usuarios">
+      <div class="sec-card">
+        <div class="toolbar">
+          <h3>Gestión de Usuarios</h3>
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="u-search" placeholder="Buscar usuario..." oninput="renderUsuarios()">
+          </div>
+          <select class="filter-sel" id="u-filter-rol" onchange="renderUsuarios()">
+            <option value="">Todos los roles</option>
+            <option value="Estudiante">Estudiante</option>
+            <option value="Psicólogo">Psicólogo</option>
+            <option value="Administrador">Administrador</option>
+          </select>
+          <select class="filter-sel" id="u-filter-estado" onchange="renderUsuarios()">
+            <option value="">Todos</option>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+          <button class="btn-new" onclick="abrirModalUsuario()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nuevo usuario
+          </button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Código</th>
+                <th>Programa / Área</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Creado</th>
+                <th style="text-align:right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="u-tbody"></tbody>
+          </table>
+          <div class="t-empty" id="u-empty" style="display:none">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <p>No se encontraron usuarios.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL RECOMENDACIONES ═══ -->
+    <div class="tab-pane" id="pane-recomendaciones">
+      <div class="sec-card">
+        <div class="toolbar">
+          <h3>Gestión de Recomendaciones</h3>
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="r-search" placeholder="Buscar recomendación..." oninput="renderRecs()">
+          </div>
+          <select class="filter-sel" id="r-filter-em" onchange="renderRecs()">
+            <option value="">Todas las emociones</option>
+            <option value="Muy bien">😄 Muy bien</option>
+            <option value="Bien">😊 Bien</option>
+            <option value="Regular">😐 Regular</option>
+            <option value="Triste">😔 Triste</option>
+            <option value="Muy mal">😞 Muy mal</option>
+            <option value="General">🌐 General</option>
+          </select>
+          <button class="btn-new" onclick="abrirModalRec()">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nueva recomendación
+          </button>
+        </div>
+        <div class="rec-grid" id="r-grid"></div>
+        <div class="t-empty" id="r-empty" style="display:none;margin:0;border-radius:0">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <p>No hay recomendaciones con esos filtros.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     MODAL USUARIO (crear / editar)
+═══════════════════════════════════ -->
+<div class="modal-bg" id="modal-usuario">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-hdr">
+      <h2 id="mu-titulo">Nuevo usuario</h2>
+      <button class="close-btn" onclick="closeModal('modal-usuario')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row cols2">
+        <div class="fg"><label>Nombre</label><input id="u-nombre" placeholder="Nombre" type="text"></div>
+        <div class="fg"><label>Apellido</label><input id="u-apellido" placeholder="Apellidos" type="text"></div>
+      </div>
+      <div class="form-row cols2">
+        <div class="fg"><label>Código / ID</label><input id="u-codigo" placeholder="Ej: 2022-1045" type="text"></div>
+        <div class="fg"><label>Rol</label>
+          <select id="u-rol" onchange="toggleProgramaField()">
+            <option value="Estudiante">Estudiante</option>
+            <option value="Psicólogo">Psicólogo</option>
+            <option value="Administrador">Administrador</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" id="u-prog-row">
+        <div class="fg"><label id="u-prog-label">Programa académico</label><input id="u-programa" placeholder="Ej: Ingeniería de Software" type="text"></div>
+      </div>
+      <div class="form-row cols2">
+        <div class="fg"><label>Correo institucional</label><input id="u-correo" placeholder="usuario@pascualbravo.edu.co" type="email"></div>
+        <div class="fg"><label>Estado</label>
+          <select id="u-estado"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select>
+        </div>
+      </div>
+      <div class="form-row cols2" id="u-pass-row">
+        <div class="fg"><label>Contraseña</label><input id="u-pass" placeholder="••••••••" type="password"></div>
+        <div class="fg"><label>Confirmar contraseña</label><input id="u-pass2" placeholder="••••••••" type="password"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-secondary" onclick="closeModal('modal-usuario')">Cancelar</button>
+      <button class="btn-primary" onclick="guardarUsuario()">Guardar usuario</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     MODAL RECOMENDACIÓN (crear / editar)
+═══════════════════════════════════ -->
+<div class="modal-bg" id="modal-rec">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-hdr">
+      <h2 id="mr-titulo">Nueva recomendación</h2>
+      <button class="close-btn" onclick="closeModal('modal-rec')"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row cols2">
+        <div class="fg"><label>Título</label><input id="r-titulo" placeholder="Ej: Respiración consciente" type="text"></div>
+        <div class="fg"><label>Emoción objetivo</label>
+          <select id="r-emocion">
+            <option value="General">🌐 General (todas)</option>
+            <option value="Muy bien">😄 Muy bien</option>
+            <option value="Bien">😊 Bien</option>
+            <option value="Regular">😐 Regular</option>
+            <option value="Triste">😔 Triste</option>
+            <option value="Muy mal">😞 Muy mal</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row cols2">
+        <div class="fg"><label>Emoji / Icono</label><input id="r-emoji" placeholder="Ej: 🧘" type="text" maxlength="4"></div>
+        <div class="fg"><label>Categoría</label>
+          <select id="r-categoria">
+            <option>Mindfulness</option>
+            <option>Actividad física</option>
+            <option>Hábitos saludables</option>
+            <option>Apoyo social</option>
+            <option>Académico</option>
+            <option>Otro</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Descripción</label><textarea id="r-desc" rows="4" placeholder="Describe la recomendación de forma clara y motivadora..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-secondary" onclick="closeModal('modal-rec')">Cancelar</button>
+      <button class="btn-primary" onclick="guardarRec()">Guardar recomendación</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     MODAL CONFIRMAR ELIMINACIÓN
+═══════════════════════════════════ -->
+<div class="modal-bg" id="modal-confirm">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-body" style="text-align:center;padding:2rem 1.75rem 1.25rem">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      </div>
+      <h2 style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--g900);margin-bottom:.5rem" id="confirm-titulo">¿Eliminar registro?</h2>
+      <p style="font-size:.86rem;color:var(--g700);font-weight:300;line-height:1.6" id="confirm-msg">Esta acción no se puede deshacer.</p>
+    </div>
+    <div class="modal-foot" style="justify-content:center;padding-top:1rem">
+      <button class="btn-secondary" onclick="closeModal('modal-confirm')">Cancelar</button>
+      <button class="btn-danger" id="confirm-ok" onclick="">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">Guardado correctamente</span>
+</div>
+
+<script>
+/* ═══════════════ localStorage helpers ═══════════════ */
+function lsGet(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; }
+}
+function lsSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
+
+/* ═══════════════ DATA ═══════════════ */
+const USUARIOS_DEFAULT = [
+  { id:1, nombre:'Carlos Mejía Delgado',     codigo:'2022-1045', programa:'Ingeniería de Software', rol:'Estudiante',    estado:'Activo',   correo:'carlos.mejia@pascualbravo.edu.co',    pass:'1234', creado:'06 Feb 2026', color:'#185FA5' },
+  { id:2, nombre:'Valentina Torres Ruiz',    codigo:'2023-0321', programa:'Diseño Industrial',       rol:'Estudiante',    estado:'Activo',   correo:'valentina.torres@pascualbravo.edu.co', pass:'1234', creado:'10 Feb 2026', color:'#7C3AED' },
+  { id:3, nombre:'Dra. Ana Ramírez',         codigo:'PSI-001',   programa:'Bienestar Universitario', rol:'Psicólogo',     estado:'Activo',   correo:'ana.ramirez@pascualbravo.edu.co',      pass:'1234', creado:'01 Ene 2026', color:'#059669' },
+  { id:4, nombre:'Dr. Luis Herrera',         codigo:'PSI-002',   programa:'Bienestar Universitario', rol:'Psicólogo',     estado:'Activo',   correo:'luis.herrera@pascualbravo.edu.co',     pass:'1234', creado:'01 Ene 2026', color:'#059669' },
+  { id:5, nombre:'Andrés Carmona Vega',      codigo:'2022-1388', programa:'Mecatrónica',             rol:'Estudiante',    estado:'Inactivo', correo:'andres.carmona@pascualbravo.edu.co',   pass:'1234', creado:'14 Mar 2026', color:'#D97706' },
+  { id:6, nombre:'Administrador Sistema',    codigo:'ADM-001',   programa:'Área de Sistemas',        rol:'Administrador', estado:'Activo',   correo:'admin@pascualbravo.edu.co',            pass:'1234', creado:'01 Ene 2026', color:'#7C3AED' },
+];
+const RECS_DEFAULT = [
+  { id:1, titulo:'Respiración consciente', emoji:'🧘', emocion:'Triste',   categoria:'Mindfulness',       desc:'Dedica 5 minutos al día a ejercicios de respiración profunda para reducir el estrés académico y calmar la mente.' },
+  { id:2, titulo:'Caminata diaria',        emoji:'🚶', emocion:'Regular',  categoria:'Actividad física',  desc:'Una caminata de 20 minutos al aire libre puede mejorar significativamente tu estado de ánimo y tu nivel de concentración.' },
+  { id:3, titulo:'Diario de gratitud',     emoji:'📓', emocion:'Triste',   categoria:'Hábitos saludables',desc:'Escribe 3 cosas positivas de tu día antes de dormir para reforzar el bienestar emocional y cambiar el foco mental.' },
+  { id:4, titulo:'Habla con alguien',      emoji:'💬', emocion:'Muy mal',  categoria:'Apoyo social',      desc:'Si sientes que necesitas apoyo adicional, no dudes en agendar una cita con el equipo de Bienestar universitario.' },
+  { id:5, titulo:'Técnica Pomodoro',       emoji:'⏱️', emocion:'Regular',  categoria:'Académico',         desc:'Organiza tu estudio en bloques de 25 minutos con pausas de 5. Mejora la productividad y reduce el agotamiento mental.' },
+  { id:6, titulo:'Celebra tus logros',     emoji:'🎉', emocion:'Muy bien', categoria:'Hábitos saludables',desc:'Reconocer y celebrar tus avances, por pequeños que sean, refuerza la motivación y el bienestar emocional.' },
+];
+
+/* Inicializar localStorage con defaults si es primera vez */
+if (!localStorage.getItem('ms_usuarios'))        lsSet('ms_usuarios', USUARIOS_DEFAULT);
+if (!localStorage.getItem('ms_recomendaciones')) lsSet('ms_recomendaciones', RECS_DEFAULT);
+
+let USUARIOS        = lsGet('ms_usuarios', USUARIOS_DEFAULT);
+let RECOMENDACIONES = lsGet('ms_recomendaciones', RECS_DEFAULT);
+
+let editingUserId  = null;
+let editingRecId   = null;
+let nextUserId     = USUARIOS.length     ? Math.max(...USUARIOS.map(u=>u.id))        + 1 : 7;
+let nextRecId      = RECOMENDACIONES.length ? Math.max(...RECOMENDACIONES.map(r=>r.id)) + 1 : 7;
+
+/* ═══════════ USUARIOS ═══════════ */
+function renderUsuarios() {
+  const q      = document.getElementById('u-search').value.trim().toLowerCase();
+  const rol    = document.getElementById('u-filter-rol').value;
+  const estado = document.getElementById('u-filter-estado').value;
+
+  let data = USUARIOS.filter(u => {
+    const mq = u.nombre.toLowerCase().includes(q) || u.correo.toLowerCase().includes(q) || u.codigo.toLowerCase().includes(q);
+    const mr = !rol    || u.rol === rol;
+    const me = !estado || u.estado === estado;
+    return mq && mr && me;
+  });
+
+  const tbody = document.getElementById('u-tbody');
+  const empty = document.getElementById('u-empty');
+  tbody.innerHTML = '';
+
+  if (!data.length) { empty.style.display='block'; return; }
+  empty.style.display = 'none';
+
+  const rolClass = { Estudiante:'role-est', Psicólogo:'role-psi', Administrador:'role-adm' };
+  data.forEach(u => {
+    const ini = u.nombre.split(' ').map(w=>w[0]).slice(0,2).join('');
+    tbody.innerHTML += `
+      <tr>
+        <td>
+          <div class="td-user">
+            <div class="u-av" style="background:${u.color}">${ini}</div>
+            <div>
+              <div class="name">${u.nombre}</div>
+              <div class="sub">${u.correo}</div>
+            </div>
+          </div>
+        </td>
+        <td style="color:var(--g700);font-size:.82rem">${u.codigo}</td>
+        <td style="font-size:.83rem;color:var(--g700)">${u.programa}</td>
+        <td><span class="badge-role ${rolClass[u.rol]||'role-est'}">${u.rol}</span></td>
+        <td>
+          <span class="badge-state ${u.estado==='Activo'?'state-on':'state-off'}">
+            <span class="dot" style="background:${u.estado==='Activo'?'var(--green)':'var(--g400)'}"></span>
+            ${u.estado}
+          </span>
+        </td>
+        <td style="font-size:.8rem;color:var(--g400)">${u.creado}</td>
+        <td>
+          <div class="actions" style="justify-content:flex-end">
+            <button class="act-btn toggle" title="${u.estado==='Activo'?'Desactivar':'Activar'}" onclick="toggleUsuario(${u.id})">
+              <svg viewBox="0 0 24 24" style="stroke:var(--amber)"><path d="M18.36 6.64A9 9 0 0 1 20.77 15"/><path d="M6.16 6.16a9 9 0 1 0 12.68 12.68"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+            </button>
+            <button class="act-btn edit" title="Editar" onclick="abrirModalUsuario(${u.id})">
+              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="act-btn del" title="Eliminar" onclick="confirmarEliminar('usuario',${u.id})">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>`;
+  });
+  document.getElementById('stat-users').textContent = USUARIOS.length;
+}
+
+function abrirModalUsuario(id = null) {
+  editingUserId = id;
+  const isEdit  = id !== null;
+  document.getElementById('mu-titulo').textContent = isEdit ? 'Editar usuario' : 'Nuevo usuario';
+  document.getElementById('u-pass-row').style.display = isEdit ? 'none' : 'grid';
+
+  if (isEdit) {
+    const u = USUARIOS.find(x => x.id === id);
+    document.getElementById('u-nombre').value   = u.nombre.split(' ').slice(0,-2).join(' ') || u.nombre;
+    document.getElementById('u-apellido').value  = u.nombre.split(' ').slice(-2).join(' ');
+    document.getElementById('u-codigo').value    = u.codigo;
+    document.getElementById('u-rol').value       = u.rol;
+    document.getElementById('u-programa').value  = u.programa;
+    document.getElementById('u-correo').value    = u.correo;
+    document.getElementById('u-estado').value    = u.estado;
+  } else {
+    ['u-nombre','u-apellido','u-codigo','u-programa','u-correo','u-pass','u-pass2'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('u-rol').value    = 'Estudiante';
+    document.getElementById('u-estado').value = 'Activo';
+  }
+  toggleProgramaField();
+  openModal('modal-usuario');
+}
+
+function toggleProgramaField() {
+  const rol = document.getElementById('u-rol').value;
+  const lbl = document.getElementById('u-prog-label');
+  const inp = document.getElementById('u-programa');
+  if (rol === 'Psicólogo') { lbl.textContent = 'Área / Especialidad'; inp.placeholder = 'Ej: Bienestar Universitario'; }
+  else if (rol === 'Administrador') { lbl.textContent = 'Área'; inp.placeholder = 'Ej: Área de Sistemas'; }
+  else { lbl.textContent = 'Programa académico'; inp.placeholder = 'Ej: Ingeniería de Software'; }
+}
+
+function guardarUsuario() {
+  const nombre   = (document.getElementById('u-nombre').value.trim() + ' ' + document.getElementById('u-apellido').value.trim()).trim();
+  const codigo   = document.getElementById('u-codigo').value.trim();
+  const rol      = document.getElementById('u-rol').value;
+  const programa = document.getElementById('u-programa').value.trim();
+  const correo   = document.getElementById('u-correo').value.trim();
+  const estado   = document.getElementById('u-estado').value;
+
+  if (!nombre || !codigo || !correo) { showToast('⚠️ Completa los campos obligatorios'); return; }
+
+  const colors = { Estudiante:'#185FA5', Psicólogo:'#059669', Administrador:'#7C3AED' };
+
+  if (editingUserId !== null) {
+    const u = USUARIOS.find(x => x.id === editingUserId);
+    Object.assign(u, { nombre, codigo, rol, programa, correo, estado });
+    showToast('Usuario actualizado correctamente');
+  } else {
+    const hoy = new Date();
+    USUARIOS.push({ id:nextUserId++, nombre, codigo, programa, rol, estado, correo, pass: document.getElementById('u-pass').value || '1234', creado: hoy.toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}), color: colors[rol]||'#185FA5' });
+    showToast('Usuario creado correctamente');
+  }
+  lsSet('ms_usuarios', USUARIOS);
+  closeModal('modal-usuario');
+  renderUsuarios();
+}
+
+function toggleUsuario(id) {
+  const u = USUARIOS.find(x => x.id === id);
+  u.estado = u.estado === 'Activo' ? 'Inactivo' : 'Activo';
+  lsSet('ms_usuarios', USUARIOS);
+  renderUsuarios();
+  showToast(`Usuario ${u.estado === 'Activo' ? 'activado' : 'desactivado'}`);
+}
+
+/* ═══════════ RECOMENDACIONES ═══════════ */
+const EM_DATA = {
+  'Muy bien': { em:'😄', tagClass:'tag-muy-bien' },
+  'Bien':     { em:'😊', tagClass:'tag-bien'     },
+  'Regular':  { em:'😐', tagClass:'tag-regular'  },
+  'Triste':   { em:'😔', tagClass:'tag-triste'   },
+  'Muy mal':  { em:'😞', tagClass:'tag-muy-mal'  },
+  'General':  { em:'🌐', tagClass:'tag-general'  },
+};
+
+function renderRecs() {
+  const q  = document.getElementById('r-search').value.trim().toLowerCase();
+  const em = document.getElementById('r-filter-em').value;
+
+  let data = RECOMENDACIONES.filter(r => {
+    const mq = r.titulo.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q);
+    const me = !em || r.emocion === em;
+    return mq && me;
+  });
+
+  const grid  = document.getElementById('r-grid');
+  const empty = document.getElementById('r-empty');
+
+  if (!data.length) { grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  const ed = (id) => EM_DATA[id] || EM_DATA['General'];
+
+  grid.innerHTML = data.map(r => `
+    <div class="rec-card">
+      <div class="rec-card-head">
+        <span class="rec-em">${r.emoji}</span>
+        <div class="rec-meta">
+          <h4>${r.titulo}</h4>
+          <p>${r.categoria}</p>
+        </div>
+        <div class="actions" style="flex-shrink:0">
+          <button class="act-btn edit" title="Editar" onclick="abrirModalRec(${r.id})">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="act-btn del" title="Eliminar" onclick="confirmarEliminar('rec',${r.id})">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+          </button>
+        </div>
+      </div>
+      <p class="rec-body">${r.desc}</p>
+      <div class="rec-footer">
+        <span class="rec-tag ${ed(r.emocion).tagClass}">${ed(r.emocion).em} ${r.emocion}</span>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('stat-recs').textContent = RECOMENDACIONES.length;
+}
+
+function abrirModalRec(id = null) {
+  editingRecId = id;
+  document.getElementById('mr-titulo').textContent = id ? 'Editar recomendación' : 'Nueva recomendación';
+  if (id !== null) {
+    const r = RECOMENDACIONES.find(x => x.id === id);
+    document.getElementById('r-titulo').value    = r.titulo;
+    document.getElementById('r-emoji').value     = r.emoji;
+    document.getElementById('r-emocion').value   = r.emocion;
+    document.getElementById('r-categoria').value = r.categoria;
+    document.getElementById('r-desc').value      = r.desc;
+  } else {
+    ['r-titulo','r-emoji','r-desc'].forEach(i => document.getElementById(i).value = '');
+    document.getElementById('r-emocion').value   = 'General';
+    document.getElementById('r-categoria').value = 'Mindfulness';
+  }
+  openModal('modal-rec');
+}
+
+function guardarRec() {
+  const titulo    = document.getElementById('r-titulo').value.trim();
+  const emoji     = document.getElementById('r-emoji').value.trim() || '💡';
+  const emocion   = document.getElementById('r-emocion').value;
+  const categoria = document.getElementById('r-categoria').value;
+  const desc      = document.getElementById('r-desc').value.trim();
+
+  if (!titulo || !desc) { showToast('⚠️ Completa título y descripción'); return; }
+
+  if (editingRecId !== null) {
+    const r = RECOMENDACIONES.find(x => x.id === editingRecId);
+    Object.assign(r, { titulo, emoji, emocion, categoria, desc });
+    showToast('Recomendación actualizada');
+  } else {
+    RECOMENDACIONES.push({ id:nextRecId++, titulo, emoji, emocion, categoria, desc });
+    showToast('Recomendación creada');
+  }
+  lsSet('ms_recomendaciones', RECOMENDACIONES);
+  closeModal('modal-rec');
+  renderRecs();
+}
+
+/* ═══════════ CONFIRM DELETE ═══════════ */
+function confirmarEliminar(tipo, id) {
+  const isUser = tipo === 'usuario';
+  const item   = isUser ? USUARIOS.find(x=>x.id===id) : RECOMENDACIONES.find(x=>x.id===id);
+  const label  = isUser ? item.nombre : item.titulo;
+  document.getElementById('confirm-titulo').textContent = isUser ? '¿Eliminar usuario?' : '¿Eliminar recomendación?';
+  document.getElementById('confirm-msg').textContent    = `Se eliminará "${label}" permanentemente. Esta acción no se puede deshacer.`;
+  document.getElementById('confirm-ok').onclick = () => {
+    if (isUser) { USUARIOS = USUARIOS.filter(x=>x.id!==id); lsSet('ms_usuarios', USUARIOS); renderUsuarios(); }
+    else        { RECOMENDACIONES = RECOMENDACIONES.filter(x=>x.id!==id); lsSet('ms_recomendaciones', RECOMENDACIONES); renderRecs(); }
+    closeModal('modal-confirm');
+    showToast(`${isUser?'Usuario':'Recomendación'} eliminado/a correctamente`);
+  };
+  openModal('modal-confirm');
+}
+
+/* ═══════════ HELPERS ═══════════ */
+function switchMainTab(btn, pane) {
+  document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(pane).classList.add('active');
+}
+function openModal(id)  { document.getElementById(id).classList.add('open');    document.body.style.overflow='hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+document.querySelectorAll('.modal-bg').forEach(bg => bg.addEventListener('click', e => { if(e.target===bg) closeModal(bg.id); }));
+function setActive(el) { document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+/* ═══════════ INIT ═══════════ */
+const dias=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const hoy=new Date();
+document.getElementById('fecha-hoy').textContent=`${dias[hoy.getDay()]}, ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}`;
+renderUsuarios();
+renderRecs();
+</script>
+
+<script>
+/* ── Sidebar responsive ── */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+  document.body.style.overflow =
+    document.getElementById('sidebar').classList.contains('open') ? 'hidden' : '';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (window.innerWidth <= 900) closeSidebar();
+  });
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+</script>
+
+</body>
+</html>
