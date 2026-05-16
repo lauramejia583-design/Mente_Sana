@@ -41,7 +41,7 @@ body {
   flex-direction: column;
   padding: 0;
   z-index: 50;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .sidebar-top {
@@ -80,6 +80,7 @@ body {
 
 .s-nav {
   flex: 1;
+  min-height: 0;
   padding: 1.25rem .75rem;
   display: flex;
   flex-direction: column;
@@ -122,6 +123,7 @@ body {
 .nav-item:hover span, .nav-item.active span { color: white; }
 
 .s-bottom {
+  flex-shrink: 0;
   padding: 1rem .75rem;
   border-top: 1px solid rgba(255,255,255,.07);
 }
